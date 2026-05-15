@@ -24,7 +24,7 @@ const server = http.createServer((req, res) => {
     res.end('Claude started')
 
     // spawn avoids shell injection — prompt is passed as a literal arg, not interpolated
-    const log = fs.createWriteStream('/home/node/claude.log', { flags: 'a' })
+    const log = fs.createWriteStream('/workspace/claude.log', { flags: 'a' })
     const child = spawn('claude', ['-p', prompt])
     child.stdout.pipe(log)
     child.stderr.pipe(log)
