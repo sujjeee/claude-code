@@ -1,10 +1,16 @@
 const http = require('http')
-const { exec } = require('child_process')
+const { spawn } = require('child_process')
 const { parse } = require('url')
+const fs = require('fs')
 
 const SECRET = process.env.SECRET || 'changeme'
 
 const server = http.createServer((req, res) => {
+  if (req.method === 'GET' && req.url === '/me') {
+    res.writeHead(200)
+    return res.end('server is live')
+  }
+
   if (req.method === 'POST' && req.url.startsWith('/run')) {
     if (req.headers['x-secret'] !== SECRET) {
       res.writeHead(401)
@@ -17,7 +23,11 @@ const server = http.createServer((req, res) => {
     res.writeHead(200)
     res.end('Claude started')
 
-    exec(`claude -p "${prompt}" >> /root/claude.log 2>&1`)
+    // spawn avoids shell injection — prompt is passed as a literal arg, not interpolated
+    const log = fs.createWriteStream('/root/claude.log', { flags: 'a' })
+    const child = spawn('claude', ['-p', prompt])
+    child.stdout.pipe(log)
+    child.stderr.pipe(log)
   } else {
     res.writeHead(404)
     res.end('Not found')
