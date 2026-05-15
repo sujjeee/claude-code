@@ -88,6 +88,8 @@ USER root
 RUN chmod +x /usr/local/bin/init-firewall.sh && \
   echo "node ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh" > /etc/sudoers.d/node-firewall && \
   chmod 0440 /etc/sudoers.d/node-firewall
+USER root
+COPY server.js /usr/local/lib/server.js
 USER node
 
-CMD ["node", "/workspace/.devcontainer/server.js"]
+CMD ["node", "/usr/local/lib/server.js"]
