@@ -90,4 +90,5 @@ RUN chmod +x /usr/local/bin/init-firewall.sh && \
   chmod 0440 /etc/sudoers.d/node-firewall
 USER node
 
-CMD ["sleep", "infinity"]
+COPY server.js /root/server.js
+CMD ["node", "/root/server.js"]
