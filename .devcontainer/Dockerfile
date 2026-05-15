@@ -90,5 +90,5 @@ RUN chmod +x /usr/local/bin/init-firewall.sh && \
   chmod 0440 /etc/sudoers.d/node-firewall
 USER node
 
-COPY server.js /root/server.js
-CMD ["node", "/root/server.js"]
+COPY --chown=node:node server.js /home/node/server.js
+CMD ["node", "/home/node/server.js"]
