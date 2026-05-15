@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "trading": {
+      "type": "http",
+      "url": "https://trading-five-iota.vercel.app/mcp"
+    }
+  }
+}
